@@ -118,6 +118,32 @@
     return dataAttributes;
   };
 
+  const toTitleCase = (str) => {
+    return str.toLocaleLowerCase().replace(/\b\w/g, function (char) {
+      return char.toUpperCase();
+    });
+  }
+
+  const jsonToHTML = (json) => {
+    if (typeof json !== 'object' || json === null) {
+      return `<span>${String(json)}</span>`;
+    }
+
+    if (Array.isArray(json)) {
+      return `<ul>${json.map(item => `<li>${jsonToHTML(item)}</li>`).join('')}</ul>`;
+    }
+
+    return `
+    <ul>
+      ${Object.entries(json).map(([key, value]) => `
+        <li>
+          <strong>${key}:</strong> ${jsonToHTML(value)}
+        </li>
+      `).join('')}
+    </ul>
+  `;
+  }
+
   global.Liferay = global.Liferay || {};
   global.Liferay.FnKit = global.Liferay.FnKit || {};
   global.Liferay.FnKit.getFontSizePixels = getFontSizePixels;
@@ -129,4 +155,6 @@
   global.Liferay.FnKit.setCookie = setCookie;
   global.Liferay.FnKit.uuidv4 = uuidv4;
   global.Liferay.FnKit.getDataAttributes = getDataAttributes;
+  global.Liferay.FnKit.toTitleCase = toTitleCase;
+  global.Liferay.FnKit.jsonToHTML = jsonToHTML;
 })(window);
