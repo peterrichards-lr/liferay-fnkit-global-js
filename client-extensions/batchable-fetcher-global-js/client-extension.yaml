@@ -1,0 +1,14 @@
+assemble:
+    -   from: src
+        hashify: batchable-fetcher.min.js
+        into: static
+liferay-fnkit-global-js-batch-fetcher:
+    name: Batcheable Fetcher Global JS Client Extension
+    scope: company
+    scriptElementAttributes:
+        async: true
+        data-senna-track: permanent
+        fetchpriority: low
+    scriptLocation: head
+    type: globalJS
+    url: batchable-fetcher.min.*.js
