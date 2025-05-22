@@ -1,0 +1,14 @@
+assemble:
+    -   from: src
+        hashify: fnkit-useful-functions.min.js
+        into: static
+liferay-fnkit-global-js-useful-functions:
+    name: Useful Functions Global JS Client Extension
+    scope: company
+    scriptElementAttributes:
+        async: true
+        data-senna-track: permanent
+        fetchpriority: low
+    scriptLocation: head
+    type: globalJS
+    url: fnkit-useful-functions.min.*.js
