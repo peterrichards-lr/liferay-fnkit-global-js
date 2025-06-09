@@ -50,5 +50,49 @@
     {
       "fileName": "Red_asterisk_Large.png",
       "id": 35825
+    },
+    {
+      "fileName": "Red_asterisk_Medium.png",
+      "id": 35837
+    },
+    {
+      "fileName": "Red_asterisk_Small.png",
+      "id": 35849
+    },
+    {
+      "fileName": "Red_audio_Large.png",
+      "id": 35861
+    },
+    {
+      "fileName": "Red_audio_Medium.png",
+      "id": 35873
+    },
+    {
+      "fileName": "Red_audio_Small.png",
+      "id": 35885
+    },
+    {
+      "fileName": "Yellow_asterisk_Large.png",
+      "id": 35896
+    },
+    {
+      "fileName": "Yellow_asterisk_Medium.png",
+      "id": 35909
+    },
+    {
+      "fileName": "Yellow_asterisk_Small.png",
+      "id": 35921
+    },
+    {
+      "fileName": "Yellow_audio_Large.png",
+      "id": 35933
+    },
+    {
+      "fileName": "Yellow_audio_Medium.png",
+      "id": 35945
+    },
+    {
+      "fileName": "Yellow_audio_Small.png",
+      "id": 35957
     }
   ]

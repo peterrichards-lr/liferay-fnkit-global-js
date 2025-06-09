@@ -137,3 +137,23 @@ After the debounce period, it individually calls your getProductById(id) for eac
 It bundles the results into a map so each caller gets the correct response.
 
 You still get caching, retries, and deduplication — but not a real network batch.
+
+## DAM Document Mapping
+
+curl -X 'GET' \
+  'https://webserver-lctbatchablefetcher-prd.lfr.cloud/o/headless-delivery/v1.0/sites/20120/documents?fields=id%2CfileName&flatten=true&pageSize=0' \
+  -H 'accept: application/json' \
+  -H 'x-csrf-token: DyRMQEow'
+
+## replace_ids.py
+
+This script requires Python 3.6 or higher.
+
+### Example Usage
+
+1. Save your input data as data.json
+2. Save your mappings as mapping.json
+3. Run from terminal:
+``` bash
+python replace_ids.py data.json mapping.json output.json
+```

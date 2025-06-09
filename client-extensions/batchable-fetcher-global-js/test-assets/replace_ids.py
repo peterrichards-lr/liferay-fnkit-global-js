@@ -21,8 +21,8 @@ def replace_ids(data, mappings):
     # Replace IDs where applicable
     for record in data:
         image = record.get("image")
-        if image and image.get("fileName") in lookup:
-            image["id"] = lookup[image["fileName"]]
+        if image and image.get("name") in lookup:
+            image["id"] = lookup[image["name"]]
     return data
 
 def main():
