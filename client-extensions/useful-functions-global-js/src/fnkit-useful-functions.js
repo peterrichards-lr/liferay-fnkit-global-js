@@ -255,6 +255,24 @@
     return obj;
   }
 
+  const collectionsNameToKey = (name) => name?.toLowerCase().replace(/\s+/g, '-');
+
+  const collectionsConvertValue = (rawData, dataType) => {
+    if (rawData == null) return null;
+    switch (dataType) {
+      case 'string': return String(rawData);
+      case 'number': {
+        const num = Number(rawData);
+        return isNaN(num) ? null : num;
+      }
+      case 'boolean': return rawData === 'true' || rawData === true;
+      case 'geolocation': return rawData; // expected { latitude, longitude }
+      case 'date': return new Date(rawData);
+      default: return rawData;
+    }
+  }
+
+
   global.Liferay = global.Liferay || {};
   global.Liferay.FnKit = global.Liferay.FnKit || {};
   global.Liferay.FnKit.getFontSizePixels = getFontSizePixels;
@@ -273,4 +291,8 @@
   global.Liferay.FnKit.flattenObject = flattenObject;
   global.Liferay.FnKit.flattenJSON = flattenJSON;
   global.Liferay.FnKit.pruneObject = pruneObject;
+
+  global.Liferay.FnKit.Liferay = global.Liferay.FnKit.Liferay || {};
+  global.Liferay.FnKit.Liferay.Collections.nameToKey = collectionsNameToKey;
+  global.Liferay.FnKit.Liferay.Collections.convertValue = collectionsConvertValue;
 })(window);
