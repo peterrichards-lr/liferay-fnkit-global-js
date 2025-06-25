@@ -144,6 +144,68 @@
   `;
   }
 
+  const loadScript = (src, opts = {}) => {
+    const { async = true, defer = false } = opts;
+
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = src;
+      script.async = async;
+      script.defer = defer;
+
+      script.onload = () => {
+        cleanup();
+        resolve();
+      };
+      script.onerror = () => {
+        cleanup();
+        reject(new Error(`Failed to load script: ${src}`));
+      };
+      // IE<9 fallback
+      script.onreadystatechange = () => {
+        if (/loaded|complete/.test(script.readyState)) {
+          cleanup();
+          resolve();
+        }
+      };
+
+      function cleanup() {
+        script.onload = script.onerror = script.onreadystatechange = null;
+      }
+
+      (document.head || document.documentElement).appendChild(script);
+    });
+  }
+
+  const loadCSS = (href, opts = {}) => {
+    const { async = false } = opts;
+    return new Promise((resolve, reject) => {
+      const link = document.createElement('link');
+
+      if (async) {
+        // preload then switch to stylesheet
+        link.rel = 'preload';
+        link.as = 'style';
+        link.href = href;
+        link.onload = () => {
+          link.onload = null;
+          link.rel = 'stylesheet';
+          resolve();
+        };
+        link.onerror = () => reject(new Error(`Failed to preload CSS: ${href}`));
+      } else {
+        // normal blocking CSS
+        link.rel = 'stylesheet';
+        link.href = href;
+        link.onload = () => resolve();
+        link.onerror = () => reject(new Error(`Failed to load CSS: ${href}`));
+      }
+
+      document.head.appendChild(link);
+    });
+  }
+
   global.Liferay = global.Liferay || {};
   global.Liferay.FnKit = global.Liferay.FnKit || {};
   global.Liferay.FnKit.getFontSizePixels = getFontSizePixels;
@@ -157,4 +219,6 @@
   global.Liferay.FnKit.getDataAttributes = getDataAttributes;
   global.Liferay.FnKit.toTitleCase = toTitleCase;
   global.Liferay.FnKit.jsonToHTML = jsonToHTML;
+  global.Liferay.FnKit.loadScript = loadScript;
+  global.Liferay.FnKit.loadCSS = loadCSS;
 })(window);
