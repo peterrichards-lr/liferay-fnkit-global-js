@@ -206,6 +206,55 @@
     });
   }
 
+  const flattenObject = (obj, prefix = '', res = {}) => {
+    for (const [key, value] of Object.entries(obj)) {
+      const nextKey = prefix ? `${prefix}.${key}` : key;
+
+      if (value && typeof value === 'object' && !Array.isArray(value)) {
+        flattenObject(value, nextKey, res);
+      } else if (Array.isArray(value)) {
+        value.forEach((item, idx) => {
+          if (item && typeof item === 'object') {
+            flattenObject(item, `${nextKey}[${idx}]`, res);
+          } else {
+            res[`${nextKey}[${idx}]`] = item;
+          }
+        });
+      } else {
+        res[nextKey] = value;
+      }
+    }
+    return res;
+  }
+
+  const flattenJSON = (data) => {
+    if (Array.isArray(data)) {
+      return data.map(item => (item && typeof item === 'object') ? flattenObject(item) : item);
+    } else if (data && typeof data === 'object') {
+      return flattenObject(data);
+    }
+    return data;
+  }
+
+  const pruneObject = (obj) => {
+    if (Array.isArray(obj)) {
+      return obj
+        .map(item => pruneObject(item))
+        .filter(item => item !== null && item !== undefined && !(typeof item === 'object' && (Array.isArray(item) ? item.length === 0 : Object.keys(item).length === 0)));
+    }
+    if (obj && typeof obj === 'object') {
+      const result = {};
+      Object.entries(obj).forEach(([key, value]) => {
+        const pruned = pruneObject(value);
+        if (pruned !== null && pruned !== undefined && !(typeof pruned === 'string' && pruned === '') && !(typeof pruned === 'object' && (Array.isArray(pruned) ? pruned.length === 0 : Object.keys(pruned).length === 0))) {
+          result[key] = pruned;
+        }
+      });
+      return result;
+    }
+    return obj;
+  }
+
   global.Liferay = global.Liferay || {};
   global.Liferay.FnKit = global.Liferay.FnKit || {};
   global.Liferay.FnKit.getFontSizePixels = getFontSizePixels;
@@ -221,4 +270,7 @@
   global.Liferay.FnKit.jsonToHTML = jsonToHTML;
   global.Liferay.FnKit.loadScript = loadScript;
   global.Liferay.FnKit.loadCSS = loadCSS;
+  global.Liferay.FnKit.flattenObject = flattenObject;
+  global.Liferay.FnKit.flattenJSON = flattenJSON;
+  global.Liferay.FnKit.pruneObject = pruneObject;
 })(window);
